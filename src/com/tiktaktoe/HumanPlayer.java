@@ -30,37 +30,51 @@ public class HumanPlayer extends Player {
 
     public int selectDifficulty(){
         int difficulty = -1;
-        boolean valid = true;
+        boolean valid = false;
 
-        do {
-            valid = true;
+        while (!valid) {
             Scanner scan = new Scanner(System.in);
-            String difficulty = scan.hasNextInt();
             System.out.println("Select game difficulty: " + "\n" +
                                "Dumb: 1, Easy: 2, Hard: 3");
 
+            //first turn input into string, since here is for checking if the input is integer or not.
+            String inputInString = scan.nextLine();
+            boolean isInt = false;
 
-            if (scan.hasNextInt()) {
-                difficulty = scan.nextInt() - 1;
+            if (inputInString.isEmpty() || inputInString.isBlank()) {
+                System.out.println("Hey, type something.");
+                isInt = false;
 
-                if (difficulty <= -1 || difficulty > 2 ){
+            } else if (inputInString.chars().allMatch(Character::isAlphabetic)) {
+                System.out.println("What did you type? Numbers and 1-3 only!");
+                isInt = false;
+
+            } else {
+                System.out.println("Seriously wtf did you just type?");
+                isInt = false;
+            }
+
+            //now it can be sure that the input is an integer
+            if (isInt) {
+
+                int input = Integer.parseInt(inputInString);
+
+                if (input < 1 || input > 3){
                     System.out.println("Hey, 1-3 only! No secret difficulty for this shitty game.");
                     valid = false;
 
+                } else {
+                    //start from 0, so have to -1
+                    difficulty = input - 1;
+                    valid = true;
                 }
-
-            } else if(){
-
-
-            } else {
-                System.out.println("What did you type? Numbers and 1-3 only!");
-                valid = false;
 
             }
 
-        } while (!valid);
-
+        }
+        valid = false;
         return difficulty;
+
     }
 
     public int giveChoice(Board board){
